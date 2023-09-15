@@ -1,0 +1,140 @@
+package devops;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    private int id;
+    private String name;
+    private int age;
+
+    public Student(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void display() {
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+    }
+}
+
+public class StudentRecordSystem {
+    private static ArrayList<Student> studentList = new ArrayList<>();
+    private static int nextId = 1;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Student Record System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display All Students");
+            System.out.println("3. Update Student");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addStudent(scanner);
+                    break;
+                case 2:
+                    displayAllStudents();
+                    break;
+                case 3:
+                    updateStudent(scanner);
+                    break;
+                case 4:
+                    deleteStudent(scanner);
+                    break;
+                case 5:
+                    System.out.println("Exiting the program.");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void addStudent(Scanner scanner) {
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter student age: ");
+        int age = scanner.nextInt();
+
+        Student student = new Student(nextId++, name, age);
+        studentList.add(student);
+        System.out.println("Student added successfully.");
+    }
+
+    private static void displayAllStudents() {
+        if (studentList.isEmpty()) {
+            System.out.println("No students to display.");
+        } else {
+            System.out.println("List of Students:");
+            for (Student student : studentList) {
+                student.display();
+                System.out.println("------------------------");
+            }
+        }
+    }
+
+    private static void updateStudent(Scanner scanner) {
+        System.out.print("Enter student ID to update: ");
+        int idToUpdate = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        for (Student student : studentList) {
+            if (student.getId() == idToUpdate) {
+                System.out.print("Enter new student name: ");
+                String newName = scanner.nextLine();
+                System.out.print("Enter new student age: ");
+                int newAge = scanner.nextInt();
+
+                studentList.remove(student);
+                student = new Student(idToUpdate, newName, newAge);
+                studentList.add(student);
+                System.out.println("Student updated successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Student not found with ID: " + idToUpdate);
+    }
+
+    private static void deleteStudent(Scanner scanner) {
+        System.out.print("Enter student ID to delete: ");
+        int idToDelete = scanner.nextInt();
+
+        for (Student student : studentList) {
+            if (student.getId() == idToDelete) {
+                studentList.remove(student);
+                System.out.println("Student deleted successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Student not found with ID: " + idToDelete);
+    }
+}
+
